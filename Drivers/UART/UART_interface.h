@@ -1,10 +1,10 @@
-#ifndef UART_H_
-#define UART_H_
+#ifndef UART_INT_H_
+#define UART_INT_H_
 
-void init();
-unsigned char checkFIFORXFULL();
-unsigned char recByte();
-unsigned char checkFIFOTXEmpty();
-unsigned char sendByte(unsigned char b);
+void UART_init();
+unsigned char UART_checkFIFORXFULL();
+unsigned char UART_recByte();
+unsigned char UART_checkFIFOTXEmpty();
+unsigned char UART_sendByte(unsigned char b);
 
 #endif
