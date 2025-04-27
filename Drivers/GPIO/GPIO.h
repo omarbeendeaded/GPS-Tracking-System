@@ -1,6 +1,6 @@
 #ifndef GPIO_HEADER
 #define GPIO_HEADER
-#include "stdint.h"
+#include <stdint.h>
 
 #define SYSTEM_CLOCK  80000000
 #define SYSCTL_RCGCGPIO			(*((volatile unsigned long*)0x400FE608))
