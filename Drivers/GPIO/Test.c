@@ -4,7 +4,7 @@
 
 int main(void) {
   
-    GPIO_PortPin_Init(PORTF, 1);
+    GPIO_Port_Init(PORTF, 1);
     GPIO_Digital_PIN_MODE(PORTF, 1, OUTPUT, NoPull);
 
     
