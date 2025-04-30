@@ -113,6 +113,6 @@
 #define PIN_6							6
 #define PIN_7							7
 #define LOW						   	0
-#define High							1
+#define HIGH							1
 
 #endif
