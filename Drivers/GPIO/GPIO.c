@@ -1,108 +1,287 @@
-#include "GPIO.h"
+#include "GPIO_Interface.h"
+#include "GPIO_Private.h"
 #include "util.h"
 
-void MCAL_GPIO_Init(GPIO_Port_Select GPIOSEL){
-    if (GPIOSEL == PORTA) {
-        SET_BIT(SYSCTL_RCGCGPIO, PORTA);                        // Enable clock for Port A
-        while ((SYSCTL_PRGPIO & (1 << PORTA)) == 0);            // Wait until ready
-        GPIO_PORTA_LOCK = GPIO_LOCK_KEY;                 // Unlock Port A
-    }
-		else if (GPIOSEL == PORTF) {
-        SET_BIT(SYSCTL_RCGCGPIO, PORTF);                        // Enable clock for Port A
-        while ((SYSCTL_PRGPIO & (1 << PORTF)) == 0);            // Wait until ready
-        GPIO_PORTF_LOCK = GPIO_LOCK_KEY;                 // Unlock Port A
-    }
-}
-
-void MCAL_GPIO_Digital_INIT(GPIO_Port_Select GPIOSEL, uint32_t pin){
-    if (GPIOSEL == PORTA) {
-        SET_BIT(GPIO_PORTA_CR, pin);                     // Allow changes
-        CLR_BIT(GPIO_PORTA_AMSEL, pin);                  // Disable analog
-        CLR_BIT(GPIO_PORTA_AFSEL, pin);                  // Disable alternate
-        GPIO_PORTA_PCTL &= ~(0xF << (pin * 4));          // Clear PCTL for pin
-        SET_BIT(GPIO_PORTA_DEN, pin);                    // Enable digital
-    }
-		 else if (GPIOSEL == PORTF) {
-        SET_BIT(GPIO_PORTF_CR, pin);                     // Allow changes
-        CLR_BIT(GPIO_PORTF_AMSEL, pin);                  // Disable analog
-        CLR_BIT(GPIO_PORTF_AFSEL, pin);                  // Disable alternate
-        GPIO_PORTF_PCTL &= ~(0xF << (pin * 4));          // Clear PCTL for pin
-        SET_BIT(GPIO_PORTF_DEN, pin);                    // Enable digital
-    }
+void GPIO_PortPin_Init(GPIO_Port_Select GPIOSEL, uint32_t pin){
+	switch(GPIOSEL){
+		case PORTA:
+			SET_BIT(RCGCGPIO, PORTA); 
+			while((PRGPIO & (1 << PORTA)) == 0);
+			GPIO_PORTA_LOCK = GPIO_LOCK_KEY;    //unlock GPIO
+			SET_BIT(GPIO_PORTA_CR, pin);
+			CLR_BIT(GPIO_PORTA_AMSEL, pin);
+			CLR_BIT(GPIO_PORTA_AFSEL, pin);
+			GPIO_PORTA_PCTL &= ~(0xF << (pin * 4));
+			SET_BIT(GPIO_PORTA_DEN, pin);
+		break;
 		
-}
+		case PORTB:
+			SET_BIT(RCGCGPIO, PORTB);
+			while((PRGPIO & (1 << PORTB)) == 0);
+			GPIO_PORTB_LOCK = GPIO_LOCK_KEY;
+			SET_BIT(GPIO_PORTB_CR, pin);
+			CLR_BIT(GPIO_PORTB_AMSEL, pin);
+			CLR_BIT(GPIO_PORTB_AFSEL, pin);
+			GPIO_PORTB_PCTL &= ~(0xF << (pin * 4));
+			SET_BIT(GPIO_PORTB_DEN, pin);
+		break;
 
-void MCAL_GPIO_Digital_PIN_MODE(GPIO_Port_Select Port, uint8_t pin, GPIO_Mode_Select Mode, GPIO_Polarity_Select Polarity){
-    if (Port == PORTA) {
-        if (Mode == Output) {
-            SET_BIT(GPIO_PORTA_DIR, pin);
-        } else {
-            CLR_BIT(GPIO_PORTA_DIR, pin);
-            if (Polarity == Pull_up) {
-                SET_BIT(GPIO_PORTA_PUR, pin);
-                CLR_BIT(GPIO_PORTA_PDR, pin);
-            } else if (Polarity == Pull_down) {
-                SET_BIT(GPIO_PORTA_PDR, pin);
-                CLR_BIT(GPIO_PORTA_PUR, pin);
-            } else {
-                CLR_BIT(GPIO_PORTA_PUR, pin);
-                CLR_BIT(GPIO_PORTA_PDR, pin);
-            }
-        }
-    }
-	else if (Port == PORTF) {
-        if (Mode == Output) {
-            SET_BIT(GPIO_PORTF_DIR, pin);
-        } else {
-            CLR_BIT(GPIO_PORTF_DIR, pin);
-            if (Polarity == Pull_up) {
-                SET_BIT(GPIO_PORTF_PUR, pin);
-                CLR_BIT(GPIO_PORTF_PDR, pin);
-            } else if (Polarity == Pull_down) {
-                SET_BIT(GPIO_PORTF_PDR, pin);
-                CLR_BIT(GPIO_PORTF_PUR, pin);
-            } else {
-                CLR_BIT(GPIO_PORTF_PUR, pin);
-                CLR_BIT(GPIO_PORTF_PDR, pin);
-            }
-        }
-    }
-}
+		case PORTC:
+			SET_BIT(RCGCGPIO, PORTC);
+			while((PRGPIO & (1 << PORTC)) == 0);
+			GPIO_PORTC_LOCK = GPIO_LOCK_KEY;
+			SET_BIT(GPIO_PORTC_CR, pin);
+			CLR_BIT(GPIO_PORTC_AMSEL, pin);
+			CLR_BIT(GPIO_PORTC_AFSEL, pin);
+			GPIO_PORTC_PCTL &= ~(0xF << (pin * 4));
+			SET_BIT(GPIO_PORTC_DEN, pin);
+		break;
 
-void MCAL_GPIO_Write_Pin(GPIO_Port_Select GPIOSEL, uint32_t pin, GPIO_Write_Select data){
-	if (GPIOSEL == PORTA){
-        if (data) {
-            SET_BIT(GPIO_PORTA_DATA, pin);
-        } else {
-            CLR_BIT(GPIO_PORTA_DATA, pin);
-        }
+		case PORTD:
+			SET_BIT(RCGCGPIO, PORTD);
+			while((PRGPIO & (1 << PORTD)) == 0);
+			GPIO_PORTD_LOCK = GPIO_LOCK_KEY;
+			SET_BIT(GPIO_PORTD_CR, pin);
+			CLR_BIT(GPIO_PORTD_AMSEL, pin);
+			CLR_BIT(GPIO_PORTD_AFSEL, pin);
+			GPIO_PORTD_PCTL &= ~(0xF << (pin * 4));
+			SET_BIT(GPIO_PORTD_DEN, pin);
+		break;
+
+		case PORTE:
+			SET_BIT(RCGCGPIO, PORTE);
+			while((PRGPIO & (1 << PORTE)) == 0);
+			GPIO_PORTE_LOCK = GPIO_LOCK_KEY;
+			SET_BIT(GPIO_PORTE_CR, pin);
+			CLR_BIT(GPIO_PORTE_AMSEL, pin);
+			CLR_BIT(GPIO_PORTE_AFSEL, pin);
+			GPIO_PORTE_PCTL &= ~(0xF << (pin * 4));
+			SET_BIT(GPIO_PORTE_DEN, pin);
+		break;
+
+		case PORTF:
+			SET_BIT(RCGCGPIO, PORTF);
+			while((PRGPIO & (1 << PORTF)) == 0);
+			GPIO_PORTF_LOCK = GPIO_LOCK_KEY;
+			SET_BIT(GPIO_PORTF_CR, pin);
+			CLR_BIT(GPIO_PORTF_AMSEL, pin);
+			CLR_BIT(GPIO_PORTF_AFSEL, pin);
+			GPIO_PORTF_PCTL &= ~(0xF << (pin * 4));
+			SET_BIT(GPIO_PORTF_DEN, pin);
+		break;
 	}
-	else if (GPIOSEL == PORTF){
-        if (data) {
-            SET_BIT(GPIO_PORTF_DATA, pin);
-        } else {
-            CLR_BIT(GPIO_PORTF_DATA, pin);
-        }
-	}
+}
+//
+
+void GPIO_Digital_PIN_MODE(GPIO_Port_Select Port, uint8_t pin, GPIO_Mode Mode, GPIO_Polarity Polarity){
+	switch(Port){
+		case PORTA:
+			if(Mode)
+				SET_BIT(GPIO_PORTA_DIR, pin);
+			else{
+				CLR_BIT(GPIO_PORTA_DIR, pin);
+			if(Polarity == 0){
+				SET_BIT(GPIO_PORTA_PUR,pin);
+					}
+			else if(Polarity == 1){
+				SET_BIT(GPIO_PORTA_PDR,pin);
+					}
+			else{
+				CLR_BIT(GPIO_PORTA_PUR,pin);
+				CLR_BIT(GPIO_PORTA_PDR,pin);
+					}
+					} break;
+						
+		case PORTB:
+			if(Mode)
+				SET_BIT(GPIO_PORTB_DIR, pin);
+			else{
+				CLR_BIT(GPIO_PORTB_DIR, pin);
+			if(Polarity == 0){
+				SET_BIT(GPIO_PORTB_PUR,pin);
+					}
+			else if(Polarity == 1){
+				SET_BIT(GPIO_PORTB_PDR,pin);
+					}
+			else{
+				CLR_BIT(GPIO_PORTB_PUR,pin);
+				CLR_BIT(GPIO_PORTB_PDR,pin);
+					}
+			} break;
+					
+		case PORTC:
+			 if(Mode)
+				SET_BIT(GPIO_PORTC_DIR, pin);
+			else{
+				CLR_BIT(GPIO_PORTC_DIR, pin);
+			if(Polarity == 0){
+				SET_BIT(GPIO_PORTC_PUR,pin);
+				}
+			else if(Polarity == 1){
+				SET_BIT(GPIO_PORTC_PDR,pin);
+					}
+			else{
+				CLR_BIT(GPIO_PORTC_PUR,pin);
+				CLR_BIT(GPIO_PORTC_PDR,pin);
+			}
+				}  break;
+					
+		case PORTD:
+			if(Mode)
+				SET_BIT(GPIO_PORTD_DIR, pin);
+			else{
+				CLR_BIT(GPIO_PORTD_DIR, pin);
+			if(Polarity == 0){
+				SET_BIT(GPIO_PORTD_PUR,pin);
+					}
+			else if(Polarity == 1){
+				SET_BIT(GPIO_PORTD_PDR,pin);
+							}
+			else{
+				CLR_BIT(GPIO_PORTD_PUR,pin);
+				CLR_BIT(GPIO_PORTD_PDR,pin);
+							}
+						} break;
+			
+		case PORTE:
+			if(Mode)
+				SET_BIT(GPIO_PORTE_DIR, pin);
+			else{
+				CLR_BIT(GPIO_PORTE_DIR, pin);
+			if(Polarity == 0){
+				SET_BIT(GPIO_PORTE_PUR,pin);
+							}
+			else if(Polarity == 1){
+				SET_BIT(GPIO_PORTE_PDR,pin);
+							}
+			else{
+				CLR_BIT(GPIO_PORTE_PUR,pin);
+				CLR_BIT(GPIO_PORTE_PDR,pin);
+							}
+						}  break;
+		
+		case PORTF:
+			if(Mode)
+					SET_BIT(GPIO_PORTF_DIR, pin);
+			else{
+					CLR_BIT(GPIO_PORTF_DIR, pin);
+			if(Polarity == 0){
+					SET_BIT(GPIO_PORTF_PUR,pin);
+							}
+			else if(Polarity == 1){
+					SET_BIT(GPIO_PORTF_PDR,pin);
+							}
+			else{
+					CLR_BIT(GPIO_PORTF_PUR,pin);
+					CLR_BIT(GPIO_PORTF_PDR,pin);
+							}
+						}		break;
+		} }
+//
+		
+void GPIO_Write_Pin(GPIO_Port_Select GPIOSEL, uint32_t pin, GPIO_Write data) {
+switch(GPIOSEL){
+	case PORTA:
+		if(data)
+					SET_BIT(GPIO_PORTA_DATA,pin);
+		else	CLR_BIT(GPIO_PORTA_DATA,pin);
+			break;
+	case PORTB:
+		if(data)
+					SET_BIT(GPIO_PORTB_DATA,pin);
+		else	CLR_BIT(GPIO_PORTB_DATA,pin);
+			break;
+	case PORTC:
+		if(data)
+					SET_BIT(GPIO_PORTC_DATA,pin);
+		else	CLR_BIT(GPIO_PORTC_DATA,pin);
+			break;
+	case PORTD:
+		if(data)
+					SET_BIT(GPIO_PORTD_DATA,pin);
+		else	CLR_BIT(GPIO_PORTD_DATA,pin);
+			break;
+	case PORTE:
+			if(data)
+					SET_BIT(GPIO_PORTE_DATA,pin);
+		else	CLR_BIT(GPIO_PORTE_DATA,pin);
+			break;
+	case PORTF:
+		if(data)
+					SET_BIT(GPIO_PORTF_DATA,pin);
+		else	CLR_BIT(GPIO_PORTF_DATA,pin);
+			break;
+		}
 }
 
-uint8_t MCAL_GPIO_Read_pin(GPIO_Port_Select GPIOSEL, uint32_t pin){
-    if (GPIOSEL == PORTA) {
-        return GET_BIT(GPIO_PORTA_DATA, pin);
+// 
+
+uint8_t MCAL_GPIO_Read_pin(GPIO_Port_Select GPIOSEL, uint32_t pin){	
+	switch(GPIOSEL){
+					case PORTA:
+						return GET_BIT(GPIO_PORTA_DATA,pin);
+					break;
+					case PORTB:
+						return GET_BIT(GPIO_PORTB_DATA,pin);
+					break;
+					case PORTC:
+						return GET_BIT(GPIO_PORTC_DATA,pin);
+					break;
+					case PORTD:
+						return GET_BIT(GPIO_PORTD_DATA,pin);
+					break;
+					case PORTE:
+						return GET_BIT(GPIO_PORTE_DATA,pin);
+					break;
+					case PORTF:
+						return GET_BIT(GPIO_PORTF_DATA,pin);
+					break;
+		}
+}
+//
+
+void GPIO_WritePort(GPIO_Port_Select GPIOSEL, uint8_t port) {
+    switch(GPIOSEL){
+        case PORTA:
+            GPIO_PORTA_DATA = port;
+            break;
+        case PORTB:
+            GPIO_PORTB_DATA = port;
+            break;
+        case PORTC:
+            GPIO_PORTC_DATA = port;
+            break;
+        case PORTD:
+            GPIO_PORTD_DATA = port;
+            break;
+        case PORTE:
+            GPIO_PORTE_DATA = port;
+            break;
+        case PORTF:
+            GPIO_PORTF_DATA = port;
+            break;
     }
-		else if (GPIOSEL == PORTF) {
-        return GET_BIT(GPIO_PORTF_DATA, pin);
+}
+// 
+
+uint8_t GPIO_ReadPort(GPIO_Port_Select GPIOSEL) {
+    switch(GPIOSEL){
+        case PORTA:
+            return (uint8_t)GPIO_PORTA_DATA;
+        case PORTB:
+            return (uint8_t)GPIO_PORTB_DATA;
+        case PORTC:
+            return (uint8_t)GPIO_PORTC_DATA;
+        case PORTD:
+            return (uint8_t)GPIO_PORTD_DATA;
+        case PORTE:
+            return (uint8_t)GPIO_PORTE_DATA;
+        case PORTF:
+            return (uint8_t)GPIO_PORTF_DATA;
+        default:
+            return 0;   //invalid 
     }
-		return 0;
 }
 
-void MCAL_GPIO_I2C_Init(I2C_Select Select){
-    if (Select == I2C1) {
-        GPIO_PORTA_CR    |=  (0x3 << 6);
-        GPIO_PORTA_AMSEL &= ~(0x3 << 6);
-        GPIO_PORTA_AFSEL |=  (0x3 << 6);
-        GPIO_PORTA_PCTL  |=  (0x33 << (6 * 4));
-        GPIO_PORTA_DEN   |=  (0x3 << 6);
-        GPIO_PORTA_ODR   |=  (0x2 << 6);
-    }
-}
+
+
