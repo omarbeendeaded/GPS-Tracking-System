@@ -28,8 +28,8 @@ void GPIO_Write_Pin(GPIO_Port_Select GPIOSEL, uint32_t pin, GPIO_Write data); //
 uint8_t GPIO_Read_pin(GPIO_Port_Select GPIOSEL, uint32_t pin);  //Read the input data of a specific pin
 
 
-void GPIO_WritePort(GPIO_Port_Select port, uint8_t data);   //Write on a port 
-uint8_t GPIO_ReadPort(GPIO_Port_Select GPIOSEL);    //Read from a port 
+void GPIO_Write_Port(GPIO_Port_Select port, uint8_t data);   //Write on a port 
+uint8_t GPIO_Read_Port(GPIO_Port_Select GPIOSEL);    //Read from a port 
 
 // read port and write port function
 #endif

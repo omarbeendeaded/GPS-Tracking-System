@@ -1,11 +1,12 @@
 #include <stdint.h>
 #include "GPIO_Interface.h"
-#include "GPIO_Interface.h"
+#include "GPIO_Private.h"
 
+void SystemInit(){};
 int main(void) {
   
-    GPIO_Port_Init(PORTF, 1);
-    GPIO_Digital_PIN_MODE(PORTF, 1, OUTPUT, NoPull);
+    GPIO_Port_Init(PORTF);
+    GPIO_Digital_PIN_MODE(PORTF, PIN_1, OUTPUT, NoPull);
 
     
 
