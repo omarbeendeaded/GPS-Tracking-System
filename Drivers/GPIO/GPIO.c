@@ -242,6 +242,30 @@ uint8_t GPIO_Read_pin(GPIO_Port_Select GPIOSEL, uint32_t pin){
 }
 //
 
+void GPIO_Port_MODE(GPIO_Port_Select Port, GPIO_Mode Mode) {
+    switch (Port) {
+        case PORTA:
+            GPIO_PORTA_DIR = (Mode == OUTPUT) ? 0xFF : 0x00;
+            break;
+        case PORTB:
+            GPIO_PORTB_DIR = (Mode == OUTPUT) ? 0xFF : 0x00;
+            break;
+        case PORTC:
+            GPIO_PORTC_DIR = (Mode == OUTPUT) ? 0xFF : 0x00;
+            break;
+        case PORTD:
+            GPIO_PORTD_DIR = (Mode == OUTPUT) ? 0xFF : 0x00;
+            break;
+        case PORTE:
+            GPIO_PORTE_DIR = (Mode == OUTPUT) ? 0xFF : 0x00;
+            break;
+        case PORTF:
+            GPIO_PORTF_DIR = (Mode == OUTPUT) ? 0xFF : 0x00;
+            break;
+    }
+}
+// 
+
 void GPIO_Write_Port(GPIO_Port_Select GPIOSEL, uint8_t data) {
     switch(GPIOSEL){
         case PORTA:
@@ -284,6 +308,5 @@ uint8_t GPIO_Read_Port(GPIO_Port_Select GPIOSEL) {
             return 0;   //invalid 
     }
 }
-
 
 

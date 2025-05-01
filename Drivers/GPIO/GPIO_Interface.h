@@ -27,7 +27,7 @@ void GPIO_Digital_PIN_MODE(GPIO_Port_Select GPIOSEL, uint8_t pin, GPIO_Mode Mode
 void GPIO_Write_Pin(GPIO_Port_Select GPIOSEL, uint32_t pin, GPIO_Write data); // Write a value on a pin
 uint8_t GPIO_Read_pin(GPIO_Port_Select GPIOSEL, uint32_t pin);  //Read the input data of a specific pin
 
-
+void GPIO_Digital_Port_Mode(GPIO_Port_Select Port, uint8_t pin, GPIO_Mode Mode); //choose input or output polarity 
 void GPIO_Write_Port(GPIO_Port_Select port, uint8_t data);   //Write on a port 
 uint8_t GPIO_Read_Port(GPIO_Port_Select GPIOSEL);    //Read from a port 
 
