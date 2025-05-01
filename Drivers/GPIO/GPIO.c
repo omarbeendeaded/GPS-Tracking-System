@@ -1,3 +1,4 @@
+
 #include "GPIO_Interface.h"
 #include "GPIO_Private.h"
 #include "util.h"
@@ -78,104 +79,104 @@ void GPIO_Digital_PIN_MODE(GPIO_Port_Select Port, uint8_t pin, GPIO_Mode Mode, G
 		case PORTA:
 			if(Mode)
 				SET_BIT(GPIO_PORTA_DIR, pin);
-			else{
+			else
 				CLR_BIT(GPIO_PORTA_DIR, pin);
-			if(Polarity == 0){
+			if(Polarity == PullUp){
 				SET_BIT(GPIO_PORTA_PUR,pin);
 					}
-			else if(Polarity == 1){
+			else if(Polarity == PullDown){
 				SET_BIT(GPIO_PORTA_PDR,pin);
 					}
 			else{
 				CLR_BIT(GPIO_PORTA_PUR,pin);
 				CLR_BIT(GPIO_PORTA_PDR,pin);
 					}
-					} break;
+			 break;
 						
 		case PORTB:
 			if(Mode)
 				SET_BIT(GPIO_PORTB_DIR, pin);
-			else{
+			else
 				CLR_BIT(GPIO_PORTB_DIR, pin);
-			if(Polarity == 0){
+			if(Polarity == PullUp){
 				SET_BIT(GPIO_PORTB_PUR,pin);
 					}
-			else if(Polarity == 1){
+			else if(Polarity == PullDown){
 				SET_BIT(GPIO_PORTB_PDR,pin);
 					}
 			else{
 				CLR_BIT(GPIO_PORTB_PUR,pin);
 				CLR_BIT(GPIO_PORTB_PDR,pin);
 					}
-			} break;
+		  break;
 					
 		case PORTC:
 			 if(Mode)
 				SET_BIT(GPIO_PORTC_DIR, pin);
-			else{
+			else
 				CLR_BIT(GPIO_PORTC_DIR, pin);
-			if(Polarity == 0){
+			if(Polarity == PullUp){
 				SET_BIT(GPIO_PORTC_PUR,pin);
 				}
-			else if(Polarity == 1){
+			else if(Polarity == PullDown){
 				SET_BIT(GPIO_PORTC_PDR,pin);
 					}
 			else{
 				CLR_BIT(GPIO_PORTC_PUR,pin);
 				CLR_BIT(GPIO_PORTC_PDR,pin);
 			}
-				}  break;
+		  break;
 					
 		case PORTD:
 			if(Mode)
 				SET_BIT(GPIO_PORTD_DIR, pin);
-			else{
+			else
 				CLR_BIT(GPIO_PORTD_DIR, pin);
-			if(Polarity == 0){
+			if(Polarity == PullUp){
 				SET_BIT(GPIO_PORTD_PUR,pin);
 					}
-			else if(Polarity == 1){
+			else if(Polarity == PullDown){
 				SET_BIT(GPIO_PORTD_PDR,pin);
 							}
 			else{
 				CLR_BIT(GPIO_PORTD_PUR,pin);
 				CLR_BIT(GPIO_PORTD_PDR,pin);
 							}
-						} break;
+		 break;
 			
 		case PORTE:
 			if(Mode)
 				SET_BIT(GPIO_PORTE_DIR, pin);
-			else{
+			else
 				CLR_BIT(GPIO_PORTE_DIR, pin);
-			if(Polarity == 0){
+			if(Polarity == PullUp){
 				SET_BIT(GPIO_PORTE_PUR,pin);
 							}
-			else if(Polarity == 1){
+			else if(Polarity == PullDown){
 				SET_BIT(GPIO_PORTE_PDR,pin);
 							}
 			else{
 				CLR_BIT(GPIO_PORTE_PUR,pin);
 				CLR_BIT(GPIO_PORTE_PDR,pin);
 							}
-						}  break;
+		  break;
 		
 		case PORTF:
 			if(Mode)
 					SET_BIT(GPIO_PORTF_DIR, pin);
-			else{
+			else
 					CLR_BIT(GPIO_PORTF_DIR, pin);
-			if(Polarity == 0){
+			if(Polarity == PullUp){
 					SET_BIT(GPIO_PORTF_PUR,pin);
 							}
-			else if(Polarity == 1){
+			else if(Polarity == PullDown){
 					SET_BIT(GPIO_PORTF_PDR,pin);
 							}
 			else{
 					CLR_BIT(GPIO_PORTF_PUR,pin);
 					CLR_BIT(GPIO_PORTF_PDR,pin);
 							}
-						}		break;
+			break;
 		} }
 //
 		
@@ -242,31 +243,97 @@ uint8_t GPIO_Read_pin(GPIO_Port_Select GPIOSEL, uint32_t pin){
 }
 //
 
-void GPIO_Port_MODE(GPIO_Port_Select Port, GPIO_Mode Mode) {
+void GPIO_Digital_Port_Mode(GPIO_Port_Select Port, GPIO_Mode Mode, GPIO_Polarity Polarity) {
     switch (Port) {
         case PORTA:
             GPIO_PORTA_DIR = (Mode == OUTPUT) ? 0xFF : 0x00;
+				if(Polarity == PullUp){
+					GPIO_PORTA_PUR = 0xFF;
+						}
+				else if(Polarity == PullDown){
+					GPIO_PORTA_PDR = 0xFF;
+						}
+				else{
+					GPIO_PORTA_PUR = 0x00;
+					GPIO_PORTA_PDR = 0x00;
+						}
             break;
+						
         case PORTB:
             GPIO_PORTB_DIR = (Mode == OUTPUT) ? 0xFF : 0x00;
+				if(Polarity == PullUp){
+					GPIO_PORTB_PUR = 0xFF;
+						}
+				else if(Polarity == PullDown){
+					GPIO_PORTB_PDR = 0xFF;
+						}
+				else{
+					GPIO_PORTB_PUR = 0x00;
+					GPIO_PORTB_PDR = 0x00;
+						}
             break;
+						
         case PORTC:
             GPIO_PORTC_DIR = (Mode == OUTPUT) ? 0xFF : 0x00;
+				if(Polarity == PullUp){
+					GPIO_PORTC_PUR = 0xFF;
+						}
+				else if(Polarity == PullDown){
+					GPIO_PORTC_PDR = 0xFF;
+						}
+				else{
+					GPIO_PORTC_PUR = 0x00;
+					GPIO_PORTC_PDR = 0x00;
+						}
             break;
+						
         case PORTD:
             GPIO_PORTD_DIR = (Mode == OUTPUT) ? 0xFF : 0x00;
+				if(Polarity == PullUp){
+					GPIO_PORTD_PUR = 0xFF;
+						}
+				else if(Polarity == PullDown){
+					GPIO_PORTD_PDR = 0xFF;
+						}
+				else{
+					GPIO_PORTD_PUR = 0x00;
+					GPIO_PORTD_PDR = 0x00;
+						}
             break;
+						
         case PORTE:
             GPIO_PORTE_DIR = (Mode == OUTPUT) ? 0xFF : 0x00;
+				if(Polarity == PullUp){
+					GPIO_PORTE_PUR = 0xFF;
+						}
+				else if(Polarity == PullDown){
+					GPIO_PORTE_PDR = 0xFF;
+						}
+				else{
+					GPIO_PORTE_PUR = 0x00;
+					GPIO_PORTE_PDR = 0x00;
+						}
             break;
+						
         case PORTF:
             GPIO_PORTF_DIR = (Mode == OUTPUT) ? 0xFF : 0x00;
+				if(Polarity == PullUp){
+					GPIO_PORTF_PUR = 0xFF;
+						}
+				else if(Polarity == PullDown){
+					GPIO_PORTF_PDR = 0xFF;
+						}
+				else{
+					GPIO_PORTF_PUR = 0x00;
+					GPIO_PORTF_PDR = 0x00;
+						}
             break;
     }
 }
 // 
 
 void GPIO_Write_Port(GPIO_Port_Select GPIOSEL, uint8_t data) {
+	  GPIO_Digital_Port_Mode(GPIOSEL,OUTPUT,NoPull);
     switch(GPIOSEL){
         case PORTA:
             GPIO_PORTA_DATA = data;
@@ -291,6 +358,7 @@ void GPIO_Write_Port(GPIO_Port_Select GPIOSEL, uint8_t data) {
 // 
 
 uint8_t GPIO_Read_Port(GPIO_Port_Select GPIOSEL) {
+	  GPIO_Digital_Port_Mode(GPIOSEL,INPUT,NoPull);
     switch(GPIOSEL){
         case PORTA:
             return (uint8_t)GPIO_PORTA_DATA;
