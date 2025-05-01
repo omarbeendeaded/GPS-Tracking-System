@@ -6,12 +6,12 @@ void SystemInit(){};
 int main(void) {
   
     GPIO_Port_Init(PORTF);
-    GPIO_Digital_PIN_MODE(PORTF, PIN_1, OUTPUT, NoPull);
-
-    
+	GPIO_Port_Init(PORTC);    
 
     while (1) {
-       GPIO_Write_Pin(PORTF, 1, High);
+       GPIO_Write_Pin(PORTF, PIN_2, High);
+	   GPIO_Write_Pin(PORTF, PIN_3, High);
+	   GPIO_Write_Pin(PORTC, PIN_7, High);
     }
 
     return 0;

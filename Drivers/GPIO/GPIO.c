@@ -180,6 +180,7 @@ void GPIO_Digital_PIN_MODE(GPIO_Port_Select Port, uint8_t pin, GPIO_Mode Mode, G
 //
 		
 void GPIO_Write_Pin(GPIO_Port_Select GPIOSEL, uint32_t pin, GPIO_Write data) {
+GPIO_Digital_PIN_MODE(GPIOSEL, pin, OUTPUT, NoPull);
 switch(GPIOSEL){
 	case PORTA:
 		if(data)
@@ -217,6 +218,7 @@ switch(GPIOSEL){
 // 
 
 uint8_t GPIO_Read_pin(GPIO_Port_Select GPIOSEL, uint32_t pin){	
+	GPIO_Digital_PIN_MODE(GPIOSEL, pin, INPUT, NoPull);
 	switch(GPIOSEL){
 					case PORTA:
 						return GET_BIT(GPIO_PORTA_DATA,pin);
