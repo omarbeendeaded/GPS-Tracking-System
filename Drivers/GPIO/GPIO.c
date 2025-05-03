@@ -12,7 +12,7 @@ void GPIO_Port_Init(GPIO_Port_Select GPIOSEL){
 			GPIO_PORTA_CR = 0xFF; 
 			GPIO_PORTA_AMSEL = 0x00;
 			GPIO_PORTA_AFSEL = 0x00;
-			GPIO_PORTA_PCTL = 0xFFFFFFFF;
+			GPIO_PORTA_PCTL = 0;
 			GPIO_PORTA_DEN = 0xFF;
 		break;
 		
@@ -23,7 +23,7 @@ void GPIO_Port_Init(GPIO_Port_Select GPIOSEL){
 			GPIO_PORTB_CR = 0xFF; 
 			GPIO_PORTB_AMSEL = 0x00;
 			GPIO_PORTB_AFSEL = 0x00;
-			GPIO_PORTB_PCTL = 0xFFFFFFFF;
+			GPIO_PORTB_PCTL = 0;
 			GPIO_PORTB_DEN = 0xFF;
 		break;
 
@@ -34,7 +34,7 @@ void GPIO_Port_Init(GPIO_Port_Select GPIOSEL){
 			GPIO_PORTC_CR = 0xFF; 
 			GPIO_PORTC_AMSEL = 0x00;
 			GPIO_PORTC_AFSEL = 0x00;
-			GPIO_PORTC_PCTL = 0xFFFFFFFF;
+			GPIO_PORTC_PCTL = 0;
 			GPIO_PORTC_DEN = 0xFF;
 		break;
 
@@ -45,7 +45,7 @@ void GPIO_Port_Init(GPIO_Port_Select GPIOSEL){
 			GPIO_PORTD_CR = 0xFF; 
 			GPIO_PORTD_AMSEL = 0x00;
 			GPIO_PORTD_AFSEL = 0x00;
-			GPIO_PORTD_PCTL = 0xFFFFFFFF;
+			GPIO_PORTD_PCTL = 0;
 			GPIO_PORTD_DEN = 0xFF;
 		break;
 
@@ -56,7 +56,7 @@ void GPIO_Port_Init(GPIO_Port_Select GPIOSEL){
 			GPIO_PORTE_CR = 0xFF; 
 			GPIO_PORTE_AMSEL = 0x00;
 			GPIO_PORTE_AFSEL = 0x00;
-			GPIO_PORTE_PCTL = 0xFFFFFFFF;
+			GPIO_PORTE_PCTL = 0;
 			GPIO_PORTE_DEN = 0xFF;
 		break;
 
@@ -67,7 +67,7 @@ void GPIO_Port_Init(GPIO_Port_Select GPIOSEL){
 			GPIO_PORTF_CR = 0xFF; 
 			GPIO_PORTF_AMSEL = 0x00;
 			GPIO_PORTF_AFSEL = 0x00;
-			GPIO_PORTF_PCTL = 0xFFFFFFFF;
+			GPIO_PORTF_PCTL = 0;
 			GPIO_PORTF_DEN = 0xFF;
 		break;
 	}
@@ -219,7 +219,6 @@ switch(GPIOSEL){
 // 
 
 uint8_t GPIO_Read_pin(GPIO_Port_Select GPIOSEL, uint32_t pin){	
-	GPIO_Digital_PIN_MODE(GPIOSEL, pin, INPUT, NoPull);
 	switch(GPIOSEL){
 					case PORTA:
 						return GET_BIT(GPIO_PORTA_DATA,pin);
@@ -358,7 +357,6 @@ void GPIO_Write_Port(GPIO_Port_Select GPIOSEL, uint8_t data) {
 // 
 
 uint8_t GPIO_Read_Port(GPIO_Port_Select GPIOSEL) {
-	  GPIO_Digital_Port_Mode(GPIOSEL,INPUT,NoPull);
     switch(GPIOSEL){
         case PORTA:
             return (uint8_t)GPIO_PORTA_DATA;
@@ -376,5 +374,4 @@ uint8_t GPIO_Read_Port(GPIO_Port_Select GPIOSEL) {
             return 0;   //invalid 
     }
 }
-
 

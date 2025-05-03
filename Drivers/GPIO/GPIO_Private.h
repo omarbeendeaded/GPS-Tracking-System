@@ -1,7 +1,7 @@
 #ifndef GPIO_Private
 #define GPIO_Private
 
-#define SYSTEM_CLOCK  80000000
+//#define SYSTEM_CLOCK  80000000
 #define RCGCGPIO			(*((volatile unsigned long*)0x400FE608))
 #define PRGPIO				(*((volatile unsigned long*)0x400FEA08))
 
