@@ -13,7 +13,7 @@ int main(){
 	Systick_Init();
 	LCD_Init();
 	while (1) {
-		LCD_Send_Char(0);
+		LCD_Send_Char('A'-1);
 		Systick_Wait_1ms(1000);
 		LCD_Clear_Display();
 		Systick_Wait_1ms(1000);
