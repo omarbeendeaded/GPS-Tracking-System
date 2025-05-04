@@ -7,7 +7,7 @@ void SystemInit(){};
 int main(void) {
   
     GPIO_Port_Init(PORTF);
-	  GPIO_Port_Init(PORTA);    
+	  GPIO_Port_Init(PORTB);    
 
     while (1) {
      GPIO_Write_Pin(PORTF, PIN_2, High);

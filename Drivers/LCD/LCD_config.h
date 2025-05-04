@@ -8,7 +8,7 @@ Options:   1- PORTA
            5- PORTE
            6- PORTF
 */
-#define LCD_CTRL_Port   PORTA
+#define LCD_CTRL_Port   PORTB
 
 /*
 Options:   1- PIN_1
@@ -31,7 +31,7 @@ Options:   1- PORTA
            5- PORTE
            6- PORTF
 */
-#define LCD_DATA_Port   PORTA
+#define LCD_DATA_Port   PORTB
 
 
 
