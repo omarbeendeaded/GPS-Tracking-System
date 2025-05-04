@@ -12,9 +12,9 @@ uint8_t CursorPosition;
 
 void LCD_Enable(){
     GPIO_Write_Pin(LCD_CTRL_Port, E_Pin, High);
-    Systick_Wait_1ms(1);
+    Systick_Wait_1us(10);
     GPIO_Write_Pin(LCD_CTRL_Port, E_Pin, Low);
-    Systick_Wait_1ms(1);
+    //Systick_Wait_1us(1);
 }
 
 void LCD_Write(uint8_t DATA){
@@ -27,18 +27,19 @@ void LCD_Write(uint8_t DATA){
 void LCD_Send_CMD(uint8_t CMD){
     GPIO_Write_Pin(LCD_CTRL_Port,RS_Pin,Low); //RS=0 --> Write Command
     LCD_Write(CMD);
-    Systick_Wait_1ms(10);
+    Systick_Wait_1ms(1);
 }
 
 void LCD_Send_DATA(uint8_t DATA){
     GPIO_Write_Pin(LCD_CTRL_Port,RS_Pin,High); //RS=1 --> Write Data
     LCD_Write(DATA);
-    Systick_Wait_1ms(10);
+    Systick_Wait_1us(100);
 }
 
 void LCD_Init(){
-    Systick_Wait_1ms(30);
+    Systick_Wait_1ms(30);	
     GPIO_Port_Init(LCD_DATA_Port);
+		GPIO_Port_Init(LCD_CTRL_Port);
     LCD_Send_CMD(Four_BitMode);
     LCD_Send_CMD(LCD_EntryMode);
     LCD_Send_CMD(LCD_Clear);
@@ -60,7 +61,7 @@ void LCD_Send_String(uint8_t *Str){
 
 void LCD_Clear_Display(){ // Clears the screen
     LCD_Send_CMD(LCD_Clear);
-	LCD_Enable();
+		LCD_Enable();
 }
 
 void LCD_Clear_Write_String(uint8_t *Str){ // Clears the screen then writes on it

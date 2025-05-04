@@ -11,9 +11,14 @@ void SystemInit(){};
 
 int main(){
 	Systick_Init();
+	LCD_Init();
 	while (1) {
-		LCD_Init();
-		LCD_Send_Char('A');
+		LCD_Send_Char(0);
+		Systick_Wait_1ms(1000);
+		LCD_Clear_Display();
+		Systick_Wait_1ms(1000);
+		//LCD_Send_Char('B');
+		//LCD_Send_Char('C');
 	}
 	
 }
