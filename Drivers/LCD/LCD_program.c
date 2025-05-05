@@ -15,7 +15,7 @@ void LCD_Enable(){
     Systick_Wait_1us(10);
     GPIO_Write_Pin(LCD_CTRL_Port, E_Pin, Low);
     //Systick_Wait_1us(1);
-}
+} 
 void LCD_Write(uint8_t DATA) {
     // Send higher nibble (bits 7–4)
     GPIO_Write_Pin(LCD_DATA_Port, PIN_4, (DATA >> 4) & 0x01);
@@ -30,15 +30,15 @@ void LCD_Write(uint8_t DATA) {
     GPIO_Write_Pin(LCD_DATA_Port, PIN_6, (DATA >> 2) & 0x01);
     GPIO_Write_Pin(LCD_DATA_Port, PIN_7, (DATA >> 3) & 0x01);
     LCD_Enable();
-}
+} 
 /*
 void LCD_Write(uint8_t DATA){
     GPIO_Write_Port(LCD_DATA_Port, DATA&0xF0);
     LCD_Enable();
     GPIO_Write_Port(LCD_DATA_Port, (DATA&0x0F)<<4);
     LCD_Enable();
-}
-*/
+}*/
+
 void LCD_Send_CMD(uint8_t CMD){
     GPIO_Write_Pin(LCD_CTRL_Port,RS_Pin,Low); //RS=0 --> Write Command
     LCD_Write(CMD);
@@ -52,17 +52,27 @@ void LCD_Send_DATA(uint8_t DATA){
 }
 
 void LCD_Init(){
-    Systick_Wait_1ms(30);	
     GPIO_Port_Init(LCD_DATA_Port);
 		GPIO_Port_Init(LCD_CTRL_Port);
+	  Systick_Wait_1ms(30);
+		LCD_Send_CMD(0x30);
+		Systick_Wait_1ms(5);
+		LCD_Send_CMD(0x30);
+		Systick_Wait_1ms(1);
+		LCD_Send_CMD(0x30);
+		Systick_Wait_1ms(20);
+		LCD_Send_CMD(0x20);
+		Systick_Wait_1ms(20);
+	
     //LCD_Send_CMD(Four_BitMode);
 		LCD_Send_DATA(0x02);
 		LCD_Enable();
-		LCD_Send_DATA(0x02);
+		LCD_Send_DATA(0x20);
 		LCD_Enable();
 		LCD_Send_DATA(0x80);
 		LCD_Enable();
 		Systick_Wait_1us(40);
+	
 		LCD_Send_CMD(LCD_DisplayOn);
 		Systick_Wait_1us(40);
     LCD_Send_CMD(LCD_Clear);
