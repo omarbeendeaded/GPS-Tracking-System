@@ -7,8 +7,8 @@
 #include "../SYSTICK/Systick_interface.h"
 #include "../SYSTICK/Systick_private.h"
 
-uint16_t i;
-uint8_t CursorPosition;
+
+
 
 void LCD_Enable(){
     GPIO_Write_Pin(LCD_CTRL_Port, E_Pin, High);
@@ -17,14 +17,15 @@ void LCD_Enable(){
     //Systick_Wait_1us(1);
 } 
 void LCD_Write(uint8_t DATA) {
-    // Send higher nibble (bits 7–4)
+    // Send higher nibble (bits 7â€“4) 0100
     GPIO_Write_Pin(LCD_DATA_Port, PIN_4, (DATA >> 4) & 0x01);
     GPIO_Write_Pin(LCD_DATA_Port, PIN_5, (DATA >> 5) & 0x01);
     GPIO_Write_Pin(LCD_DATA_Port, PIN_6, (DATA >> 6) & 0x01);
     GPIO_Write_Pin(LCD_DATA_Port, PIN_7, (DATA >> 7) & 0x01);
+		//LCD_DATA_Port &= 0xF0;
     LCD_Enable();
-
-    // Send lower nibble (bits 3–0)
+	
+    // Send lower nibble (bits 3â€“0)
     GPIO_Write_Pin(LCD_DATA_Port, PIN_4, (DATA >> 0) & 0x01);
     GPIO_Write_Pin(LCD_DATA_Port, PIN_5, (DATA >> 1) & 0x01);
     GPIO_Write_Pin(LCD_DATA_Port, PIN_6, (DATA >> 2) & 0x01);
@@ -42,7 +43,7 @@ void LCD_Write(uint8_t DATA){
 void LCD_Send_CMD(uint8_t CMD){
     GPIO_Write_Pin(LCD_CTRL_Port,RS_Pin,Low); //RS=0 --> Write Command
     LCD_Write(CMD);
-    Systick_Wait_1us(1);
+    Systick_Wait_1us(100);
 }
 
 void LCD_Send_DATA(uint8_t DATA){
@@ -86,6 +87,7 @@ void LCD_Send_Char(uint8_t Char){
 }
 
 void LCD_Send_String(uint8_t *Str){
+	uint16_t i;
   i = 0;
 	while (Str[i] != '\0'){
 		LCD_Send_DATA(Str[i]);
@@ -95,7 +97,8 @@ void LCD_Send_String(uint8_t *Str){
 
 void LCD_Clear_Display(){ // Clears the screen
     LCD_Send_CMD(LCD_Clear);
-		LCD_Enable();
+		Systick_Wait_1ms(2);
+		//LCD_Enable();
 }
 
 void LCD_Clear_Write_String(uint8_t *Str){ // Clears the screen then writes on it
@@ -104,6 +107,7 @@ void LCD_Clear_Write_String(uint8_t *Str){ // Clears the screen then writes on i
 }
 
 void LCD_MoveCursor(uint8_t Row, uint8_t Col){
+		uint8_t CursorPosition;
     GPIO_Write_Pin(LCD_CTRL_Port,RS_Pin,Low); // RS=0
 
 	CursorPosition = Col; // Starting position based on column
@@ -113,5 +117,5 @@ void LCD_MoveCursor(uint8_t Row, uint8_t Col){
         else if (Row == Row2) { // Set DDRAM address for the second row
 		LCD_Send_CMD(LCD_SET_DDRAM_ADDR | (0x40 + CursorPosition));
 	}
-	LCD_Enable();
+	//LCD_Enable();
 }
