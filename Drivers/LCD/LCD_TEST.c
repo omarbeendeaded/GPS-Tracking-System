@@ -6,10 +6,12 @@
 #include "../GPIO/GPIO_Private.h"
 #include "../SYSTICK/Systick_interface.h"
 #include "../SYSTICK/Systick_private.h"
+#include "../UART/UART_interface.h"
+#include "../UART/UART_private.h"
 
 void SystemInit(){};
 
-int main(){
+int huda(){
 	Systick_Init();
 	LCD_Init();
 	//LCD_Send_Char(0);

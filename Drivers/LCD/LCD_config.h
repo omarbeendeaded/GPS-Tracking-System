@@ -32,7 +32,4 @@ Options:   1- PORTA
            6- PORTF
 */
 #define LCD_DATA_Port   PORTB
-
-
-
 #endif

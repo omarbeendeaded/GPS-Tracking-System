@@ -27,7 +27,7 @@ unsigned char UART0_checkFIFORX(){
 }
 // send one byte (blocking)
 void UART0_sendByte(uint8_t data){
-    while (!UART_checkFIFOTX()); // wait until space in TX FIFO
+    while (!UART0_checkFIFOTX()); // wait until space in TX FIFO
     UART0_DR_R = data;
 }
 // receive one byte (blocking)
