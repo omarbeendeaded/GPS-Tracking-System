@@ -1,3 +1,4 @@
+
 #include <stdint.h>
 #include "LCD_config.h"
 #include "LCD_interface.h"
@@ -16,11 +17,8 @@ void LCD_Enable(){
     GPIO_Write_Pin(LCD_CTRL_Port, E_Pin, Low);
     //Systick_Wait_1us(1);
 } 
-
-
-
 void LCD_Write(uint8_t DATA) {
-    // Send higher nibble (bits 7–4) 0100
+    // Send higher nibble (bits 7â€“4) 0100
     GPIO_Write_Pin(LCD_DATA_Port, PIN_4, (DATA >> 4) & 0x01);
     GPIO_Write_Pin(LCD_DATA_Port, PIN_5, (DATA >> 5) & 0x01);
     GPIO_Write_Pin(LCD_DATA_Port, PIN_6, (DATA >> 6) & 0x01);
@@ -28,7 +26,7 @@ void LCD_Write(uint8_t DATA) {
 		//LCD_DATA_Port &= 0xF0;
     LCD_Enable();
 	
-    // Send lower nibble (bits 3–0)
+    // Send lower nibble (bits 3â€“0)
     GPIO_Write_Pin(LCD_DATA_Port, PIN_4, (DATA >> 0) & 0x01);
     GPIO_Write_Pin(LCD_DATA_Port, PIN_5, (DATA >> 1) & 0x01);
     GPIO_Write_Pin(LCD_DATA_Port, PIN_6, (DATA >> 2) & 0x01);
@@ -120,5 +118,5 @@ void LCD_MoveCursor(uint8_t Row, uint8_t Col){
         else if (Row == Row2) { // Set DDRAM address for the second row
 		LCD_Send_CMD(LCD_SET_DDRAM_ADDR | (0x40 + CursorPosition));
 	}
-	
+	//LCD_Enable();
 }
