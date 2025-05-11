@@ -4,19 +4,43 @@
 #include "../LCD/LCD_private.h"
 #include <string.h>
 #include <stdlib.h>
+#include "../SYSTICK/Systick_interface.h"
+#include "../SYSTICK/Systick_private.h"
 
-char GPS_logName[] ="$GPRMC,";
-char lat[15];
-char longi[15];
-char dummy;
+uint8_t GPS_logName[] ="$GPRMC,";
+uint8_t lat[32];
+uint8_t longi[32];
+uint8_t dummy;
 
+void intTostr(uint32_t num, uint8_t* str) {
+	uint8_t buffer[32]; // Buffer to hold the reversed number
+	uint32_t i = 0;
+	uint32_t j;
+
+	// Handle the case when the number is 0
+	if (num == 0) {
+		str[i++] = '0';
+		} else {
+		// Convert the number to string in reverse order
+		while (num > 0) {
+			buffer[i++] = (num % 10) + '0'; // Get the last digit and convert to ASCII
+			num /= 10;
+		}
+	}
+
+	// Reverse the string
+	for (j = 0; j < i; j++) {
+		str[j] = buffer[i - j - 1];
+	}
+	str[i] = '\0'; // Null-terminate the string
+}
 
 void GPS_read(void){
-	char recievedChar;
-	char flag;
-	int i,counter1,counter2;
+	uint8_t recievedChar;
+	uint8_t flag;
+	uint32_t i,counter1,counter2;
 	
-		UART0_sendByte('C');
+	UART0_sendByte('C');
 	UART0_sendByte('o');
 	UART0_sendByte('o');
 	UART0_sendByte('r');
@@ -50,7 +74,7 @@ void GPS_read(void){
 	} while(flag==0);
 
 	
-	for(counter1=0 ; counter1<15 ;counter1++){
+	for(counter1=0 ; counter1<32 ;counter1++){
 		recievedChar = UART1_recByte();
 		if(recievedChar == ','){
 			dummy = UART1_recByte();
@@ -58,37 +82,48 @@ void GPS_read(void){
 			break ;
 		}
 		lat[counter1] = recievedChar;
-		UART0_sendByte(recievedChar);
 	}
 	
-	UART0_sendByte(' ');
 
-	for(counter2=0 ; counter2<15 ;counter2++){
+	for(counter2=0 ; counter2 < 32 ;counter2++){
 		recievedChar = UART1_recByte();
 		if(recievedChar == ','){
 			break;
 		}
 		longi[counter2] = recievedChar;
-		UART0_sendByte(recievedChar);
 	}
 
-	UART0_sendByte('\n');
 	
-	longi[counter2 - 1] = '\0';
-	lat[counter1 - 1] = '\0';
+	longi[counter2] = '\0';
+	lat[counter1] = '\0';
+	
+	
 }
 
-float GPSlat(void){
-	float x;
-	//char* end;
-	LCD_Clear_Write_String(lat);
-	x = strtof(lat, NULL) / 100;
-  return x;	
-}
+
+
 
 float GPSlong(void){
 	float y;
-	LCD_Clear_Write_String(longi);
-  y = strtof(longi, NULL) / 100;
+	int i;
+	for (i = 0; i < 32; i++) {
+		if (longi[i] != '\0') UART0_sendByte(longi[i]);
+	  else break;
+	}
+	UART0_sendByte(' ');
+  y = strtof(longi+1, NULL) ;
   return y;	
+}
+
+float GPSlat(void){
+	int i;
+	float x;
+	for (i = 0; i < 32; i++) {
+		if (lat[i] != '\0') UART0_sendByte(lat[i]);
+		else break;
+	}
+	UART0_sendByte(' ');
+	x = strtof(lat, NULL );
+
+	return x;	
 }

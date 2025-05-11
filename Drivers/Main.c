@@ -11,8 +11,8 @@
 #include <stdlib.h>
 #include <stdint.h>
 #include <math.h>
-#define  EARTH_RADIUS 6371000
-#define pi 3.14159265359
+#define  EARTH_RADIUS 6371000.0000f
+#define pi 3.14159265359f
 #define red 1
 #define yellow 2
 #define green 3
@@ -20,7 +20,7 @@
 
 void SystemInit(){};
 
-
+void int2str(uint32_t num, uint8_t* str) ;
 
 ///////////////////////////////////////////////// Buzzer OP  //////////////////////////////////////////////////////////////
 
@@ -60,63 +60,13 @@ void LEDvoid_OFF (uint8_t PORT, uint8_t PIN)
                                                           // polarity: NoPull
     GPIO_Write_Pin(PORT, PIN, Low);
 }
-///////////////////////////////////////////////// Distance Formatting  //////////////////////////////////////////////////////////////
-   
-float ToDegree (float angle){
-	int degree = (int)angle/100 ; 
-	float minutes = angle -(float)degree*100;
-	return (degree + (minutes/60) );
-}	
 
-
-float ToRad(float angle){
-	return angle * pi/180;
-}
-	
-	// get angle from degree to rad 
-
-
-float GetDistance (float currentLong,float currentLat, float destlong,float destlat){
-  float currentLongRad = ToRad(currentLong);
-
-	float currentLatRad = ToRad(currentLat);
-	float destlongRad = ToRad(destlong);
-	float destlatRad = ToRad(destlat);
-	
-	//get the difference  
-	float longDiff = destlongRad - currentLongRad ;
-	float latDiff  = destlatRad - currentLatRad ; 
-	
-	
-	// calculate distance 
-	float a;
-	float c;
-	//float x , y ,z  ,w;
-	//z= cosf(destlatRad);
-	LCD_Clear_Write_String("Hiiii");
-	//w = sinf(latDiff)/2;
-	
-	LCD_Clear_Write_String("Hi");
-	//x = cosf(currentLatRad);
-	LCD_Clear_Write_String("Hii");
-	//y= powf(sinf(longDiff)/2,2);
-	
-	
-	
-	//a = w + x*y*z;
-	a = powf(sinf(latDiff)/2,2)+ cosf(currentLatRad)*cosf(destlatRad)*powf(sinf(longDiff)/2,2);// haversine formula a = sin2((qb-qa)/2)+ cos(qa)*cos(qb)*sin2((ib-ia)/2)
-	//LCD_Clear_Write_String("Hi");
-	c = 2*atan2f(sqrtf(a),sqrtf(1-a));
-	//c = 2*asinf(sqrtf(a));
-	LCD_Clear_Write_String("Hiii");
-	return EARTH_RADIUS * c ; 
-}
 
 ////////////////////////////////////////////////////////// Int to String //////////////////////////////////////////////////
-void int2str(uint16_t num, char* str) {
-	char buffer[16]; // Buffer to hold the reversed number
-	int i = 0;
-	int j;
+void int2str(uint32_t num, uint8_t* str) {
+	uint8_t buffer[16]; // Buffer to hold the reversed number
+	uint32_t i = 0;
+	uint32_t  j;
 
 	// Handle the case when the number is 0
 	if (num == 0) {
@@ -128,40 +78,85 @@ void int2str(uint16_t num, char* str) {
 			num /= 10;
 		}
 	}
-
-	// Reverse the string
+			// Reverse the string
 	for (j = 0; j < i; j++) {
 		str[j] = buffer[i - j - 1];
 	}
 	str[i] = '\0'; // Null-terminate the string
 }
+	
+///////////////////////////////////////////////// Distance Formatting  //////////////////////////////////////////////////////////////
+   
+float ToDegree (float angle){
+	uint8_t temp[32];
+	float minutes;
+	uint32_t degree = (uint32_t)angle/100 ; 
+	minutes = angle -(float)degree*100;
+
+	return (degree + (minutes/60) );
+
+}	
+
+
+float ToRad(float angle){
+	return angle * pi/180;
+}
+	
+	// get angle from degree to rad 
+
+
+double GetDistance (double currentLong,double currentLat, double destlong,double  destlat){
+  uint8_t buf[32];
+	uint8_t temp[32];
+	double a;
+	double c;
+	
+	double currentLongRad , currentLatRad,destlongRad, destlatRad, longDiff,latDiff;
+	currentLongRad = ToRad(ToDegree(currentLong));
+	currentLatRad = ToRad(ToDegree(currentLat));
+	destlongRad = ToRad(ToDegree(destlong));
+	destlatRad = ToRad(ToDegree(destlat));
+
+	longDiff = fabs(destlongRad - currentLongRad) ;
+	latDiff  = fabs(destlatRad - currentLatRad) ; 
+	
+
+	a = powf(sinf(latDiff/2.0),2)+ cosf(currentLatRad)*cosf(destlatRad)*powf(sinf(longDiff/2.0),2);// haversine formula a = sin2((qb-qa)/2)+ cos(qa)*cos(qb)*sin2((ib-ia)/2)
+	
+	c = 2*atanf(sqrtf(a)/sqrtf(1.0 - a));
+	
+	return fabs(EARTH_RADIUS * c) ; 
+}
+
 
 ///////////////////////////////////////////////// Find The Closest Location ////////////////////////////////////////////////////////////
 
-int compare_distance(double currentlong, double currentlat) {
-		char buf[32];
-    double longitude[5] = {30.0635867, 30.0637097, 30.0652334, 30.0655795, 30.0643141};
-    double latitude[5] = {31.2785090, 31.2806015, 31.2801183, 31.2784068, 31.2777966};
-    float min_distance = 20000;
-		float distance;
-    // char min_location;
-		int k, i = 0 ;
+uint32_t compare_distance(double currentlong, double currentlat) {
+		uint8_t buf[32];
+    //double longitude[6] = {3003.82004, 3003.86237, 3003.93685, 3003.83299, 3003.90824,3003.84692};
+    //double latitude[6] = {3116.70529, 3116.66735, 3116.70473, 3116.82818,3116.79777,3116.74445};
+		double longitude[5] = {3003.86237, 3003.93685, 3003.82004, 3003.83299, 3003.90824};
+    double latitude[5] = {3116.66735, 3116.70473, 3116.70529, 3116.82818,3116.79777};
+    double min_distance = 20000000;
+		double distance;
+		uint32_t k, i=0 ;
 
-    for ( k=0; k<4; k++) {
+    for ( k=0; k<5; k++) {
         distance = GetDistance (currentlong, currentlat, longitude[k], latitude[k]);
-        /*if (min_distance > abs(distance)) {
-        min_distance = distance;
-				i = k;
-        //min_location = location[k];
-        }*/
-			int2str((int)min_distance, buf);
-			LCD_Clear_Write_String(buf);
-    } return i; 
+				distance = fabs(distance);
+
+				if (min_distance > distance) {
+					min_distance = distance;
+				 i = k;
+       }
+    }
+	return i; 
 }
+
 
 ///////////////////////////////////////////////// Led Set On Distance //////////////////////////////////////////////////////////////
 
-void Led_Set (float distance){
+void Led_Set (double distance){
     if(distance >= 75) {
             LEDvoid_ON (PORTF, red); 
             LEDvoid_OFF (PORTF, yellow); 
@@ -187,17 +182,20 @@ void Led_Set (float distance){
 
 ///////////////////////////////////////////////// Main Program ////////////////////////////////////////////////////////////////////
 int main(){
-    float currentLat;
-    float currentLong;
-    float distance;
-		int disss; 
-		int k;
-		char strDist[16];
-    char location[5] = {0, 1, 2 , 3 , 4};
-    float longitude[5] = {30.0635867, 30.0637097, 30.0652334, 30.0655795, 30.0643141};
-    float latitude[5] = {31.2785090, 31.2806015, 31.2801183, 31.2784068, 31.2777966};
-    float destlong;
-    float destlat; 
+    double currentLat;
+    double currentLong;
+    double distance;
+		uint32_t disss; 
+		uint32_t k;
+		uint8_t strDist[16];
+    uint8_t location[5] = {0, 1, 2 , 3 , 4};
+		uint8_t temp[32];
+    double longitude[6] = {3003.86237, 3003.93685, 3003.82004, 3003.83299, 3003.90824};
+    double latitude[6] = {3116.66735, 3116.70473, 3116.70529, 3116.82818,3116.79777};
+		//double longitude[5] = {3003.82004, 3003.86237, 3003.93685, 3003.83299, 3003.90824};
+    //double latitude[5] = {3116.70529, 3116.66735, 3116.70473, 3116.82818,3116.79777};
+    double destlong;
+    double destlat; 
 
     Systick_Init();
 		LCD_Init();
@@ -205,58 +203,52 @@ int main(){
 		LCD_Clear_Write_String("LCD Init");
 		UART0_init();
     UART1_init();
-		LCD_Clear_Write_String("UART Init");
-    GPS_read();
 		LCD_Clear_Write_String("GPS Init");
     while(1){
 				GPS_read();
-				LCD_Send_String(" IN ");
-        Systick_Wait_1ms (2000);
-        currentLat = GPSlat();
-        currentLong = GPSlong();
-        k = compare_distance (currentLong , currentLat);
-        destlong = longitude[k];
-        destlat= latitude[k];
-        distance = GetDistance (currentLong,currentLat, destlong, destlat);
-				int2str(distance, strDist);
-				
-        //Led_Set (distance);
-				LCD_Clear_Write_String("Let's Start3");
-				LCD_Send_Char(k+'0');	
-				Systick_Wait_1ms (1000);
-			  
+				longitude[5] = GPSlong();
+        latitude[5] = GPSlat();
+        k = compare_distance (latitude[5] , longitude[5]);
+        destlong = longitude[0];
+        destlat= latitude[0];
+        //distance = GetDistance (destlong, destlat, 3116.74980, 3003.83220);
+				distance = GetDistance (latitude[5],longitude[5], longitude[k],latitude[k]);
+				int2str((uint32_t)distance, strDist);
 
         switch (k){
 					
             case 0 :
-            LCD_Clear_Write_String("Credit Building");
+            LCD_Clear_Write_String("Civil Building");
             LCD_MoveCursor( Row2, 0 );
             LCD_Send_String(strDist);
             LCD_Send_String(" meters");
             break;
             case 1 :
-            LCD_Clear_Write_String("Hall C/D");
-            LCD_MoveCursor( Row2, 0 );
-            LCD_Send_String(strDist);
-            LCD_Send_String(" meters");
-            break;
-            case 2 :
-            LCD_Clear_Write_String("Library");
-            LCD_MoveCursor( Row2, 0 );
-            LCD_Send_String(strDist);
-            LCD_Send_String(" meters");
-            break;
-            case 3 :
             LCD_Clear_Write_String("Fountain");
             LCD_MoveCursor( Row2, 0 );
             LCD_Send_String(strDist);
             LCD_Send_String(" meters");
             break;
-            case 4 :
-            LCD_Clear_Write_String("Civil Building");
+            case 2 :
+            LCD_Clear_Write_String("Credit Building");
             LCD_MoveCursor( Row2, 0 );
             LCD_Send_String(strDist);
             LCD_Send_String(" meters");
-            break; }   
-}}
+            break;
+            case 3 :
+            LCD_Clear_Write_String("Hall C/D");
+            LCD_MoveCursor( Row2, 0 );
+            LCD_Send_String(strDist);
+            LCD_Send_String(" meters");
+            break;
+            case 4 :
+            LCD_Clear_Write_String("Library");
+            LCD_MoveCursor( Row2, 0 );
+            LCD_Send_String(strDist);
+            LCD_Send_String(" meters");
+            break; }
+			
+		}
+		
+}
 
