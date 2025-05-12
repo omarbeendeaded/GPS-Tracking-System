@@ -15,7 +15,7 @@
 #define pi 3.14159265359f
 #define red 1
 #define yellow 2
-#define green 3
+ #define green 3
 
 
 void SystemInit(){};
@@ -26,7 +26,7 @@ void int2str(uint32_t num, uint8_t* str) ;
 
 void Buzzervoid_ON (uint8_t PORT, uint8_t PIN)
 {
-    GPIO_Digital_PIN_MODE (PORT, PIN , OUTPUT, NoPull); // select port: PORTA,PORTB,PORTC,PORTD,PORTE,PORTF
+    GPIO_Port_Init(PORT); // select port: PORTA,PORTB,PORTC,PORTD,PORTE,PORTF
                                                           // select pin: PIN_0 ....
                                                           // select mode: OUTPUT
                                                           // polarity: NoPull
@@ -35,7 +35,7 @@ void Buzzervoid_ON (uint8_t PORT, uint8_t PIN)
 
 void Buzzervoid_OFF (uint8_t PORT, uint8_t PIN)
 {
-    GPIO_Digital_PIN_MODE (PORT, PIN, OUTPUT, NoPull); // select port: PORTA,PORTB,PORTC,PORTD,PORTE,PORTF
+    GPIO_Port_Init(PORT); // select port: PORTA,PORTB,PORTC,PORTD,PORTE,PORTF
                                                           // select pin: PIN_0 ....
                                                           // select mode: OUTPUT
                                                           // polarity: NoPull
@@ -45,7 +45,7 @@ void Buzzervoid_OFF (uint8_t PORT, uint8_t PIN)
 ///////////////////////////////////////////////// LED OP  //////////////////////////////////////////////////////////////
 void LEDvoid_ON (uint8_t PORT, uint8_t PIN)
 {
-    GPIO_Digital_PIN_MODE (PORT, PIN , OUTPUT, NoPull); // select port: PORTA,PORTB,PORTC,PORTD,PORTE,PORTF
+    GPIO_Port_Init(PORT); // select port: PORTA,PORTB,PORTC,PORTD,PORTE,PORTF
                                                           // select pin: PIN_0 ....
                                                           // select mode: OUTPUT
                                                           // polarity: NoPull
@@ -54,7 +54,7 @@ void LEDvoid_ON (uint8_t PORT, uint8_t PIN)
 
 void LEDvoid_OFF (uint8_t PORT, uint8_t PIN)
 {
-    GPIO_Digital_PIN_MODE (PORT, PIN, OUTPUT, NoPull); // select port: PORTA,PORTB,PORTC,PORTD,PORTE,PORTF
+    GPIO_Port_Init(PORT); // select port: PORTA,PORTB,PORTC,PORTD,PORTE,PORTF
                                                           // select pin: PIN_0 ....
                                                           // select mode: OUTPUT
                                                           // polarity: NoPull
@@ -157,23 +157,23 @@ uint32_t compare_distance(double currentlong, double currentlat) {
 ///////////////////////////////////////////////// Led Set On Distance //////////////////////////////////////////////////////////////
 
 void Led_Set (double distance){
-    if(distance >= 75) {
+    if(distance >= 75 ) {
             LEDvoid_ON (PORTF, red); 
             LEDvoid_OFF (PORTF, yellow); 
             LEDvoid_OFF(PORTF, green);
-            Buzzervoid_OFF(PORTE,2 );
+            Buzzervoid_OFF(PORTE,5 );
     }
     else if (distance> 20 && distance<75) {
             LEDvoid_ON (PORTF, yellow); 
             LEDvoid_OFF (PORTF, red); 
             LEDvoid_OFF(PORTF, green);
-            Buzzervoid_OFF(PORTE,2 );
+            Buzzervoid_OFF(PORTE,5 );
     }
     else if (distance<=20){
-        LEDvoid_ON (PORTF, green); 
+						LEDvoid_ON (PORTF, green); 
             LEDvoid_OFF (PORTF, red); 
             LEDvoid_OFF(PORTF, yellow);
-            Buzzervoid_ON (PORTE, 2);
+            Buzzervoid_ON (PORTE, 5);
     }
     }
 
@@ -213,6 +213,7 @@ int main(){
         destlat= latitude[0];
         //distance = GetDistance (destlong, destlat, 3116.74980, 3003.83220);
 				distance = GetDistance (latitude[5],longitude[5], longitude[k],latitude[k]);
+				Led_Set(distance);
 				int2str((uint32_t)distance, strDist);
 
         switch (k){
@@ -249,6 +250,7 @@ int main(){
             break; }
 			
 		}
+	
 		
 }
 

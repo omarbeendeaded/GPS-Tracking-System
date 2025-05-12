@@ -3,7 +3,7 @@
 
 void LEDvoid_ON (uint8_t PORT, uint8_t PIN)
 {
-    GPIO_Digital_PIN_MODE (PORT, PIN , OUTPUT, NoPull); // select port: PORTA,PORTB,PORTC,PORTD,PORTE,PORTF
+    GPIO_Port_Init(PORT); // select port: PORTA,PORTB,PORTC,PORTD,PORTE,PORTF
                                                           // select pin: PIN_0 ....
                                                           // select mode: OUTPUT
                                                           // polarity: NoPull
@@ -12,7 +12,7 @@ void LEDvoid_ON (uint8_t PORT, uint8_t PIN)
 
 void LEDvoid_OFF (uint8_t PORT, uint8_t PIN)
 {
-    GPIO_Digital_PIN_MODE (PORT, PIN, OUTPUT, NoPull); // select port: PORTA,PORTB,PORTC,PORTD,PORTE,PORTF
+    GPIO_Port_Init(PORT); // select port: PORTA,PORTB,PORTC,PORTD,PORTE,PORTF
                                                           // select pin: PIN_0 ....
                                                           // select mode: OUTPUT
                                                           // polarity: NoPull
