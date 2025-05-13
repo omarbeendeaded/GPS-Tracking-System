@@ -1,12 +1,12 @@
-#include "GPIO/GPIO_Interface.h"
-#include "GPIO/GPIO_Private.h"
-#include "SYSTICK/Systick_interface.h"
-#include "SYSTICK/Systick_private.h"
-#include "LCD/LCD_interface.h"
-#include "LCD/LCD_private.h"
-#include "UART/UART_interface.h"
-#include "UART/UART_private.h"
-#include "GPS/GPS.h"
+#include "../MCAL/GPIO/GPIO_Interface.h"
+#include "../MCAL/GPIO/GPIO_Private.h"
+#include "../MCAL/SYSTICK/Systick_interface.h"
+#include "../MCAL/SYSTICK/Systick_private.h"
+#include "../MCAL/UART/UART_interface.h"
+#include "../MCAL/UART/UART_private.h"
+#include "../HAL/GPS/GPS.h"
+#include "../HAL/LCD/LCD_interface.h"
+#include "../HAL/LCD/LCD_private.h"
 #include <string.h>
 #include <stdlib.h>
 #include <stdint.h>
@@ -82,7 +82,7 @@ void int2str(uint32_t num, uint8_t* str) {
 	for (j = 0; j < i; j++) {
 		str[j] = buffer[i - j - 1];
 	}
-	str[i] = '\0'; // Null-terminate the string
+	str[i] = '\0'; // Null-terminateï¿½theï¿½string
 }
 	
 ///////////////////////////////////////////////// Distance Formatting  //////////////////////////////////////////////////////////////

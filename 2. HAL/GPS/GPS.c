@@ -1,11 +1,11 @@
-#include "../UART/UART_interface.h"
-#include "../UART/UART_private.h"
+#include "../../MCAL/SYSTICK/Systick_interface.h"
+#include "../../MCAL/SYSTICK/Systick_private.h"
+#include "../../MCAL/UART/UART_interface.h"
+#include "../../MCAL/UART/UART_private.h"
 #include "../LCD/LCD_interface.h"
 #include "../LCD/LCD_private.h"
 #include <string.h>
 #include <stdlib.h>
-#include "../SYSTICK/Systick_interface.h"
-#include "../SYSTICK/Systick_private.h"
 
 uint8_t GPS_logName[] ="$GPRMC,";
 uint8_t lat[32];
@@ -32,7 +32,7 @@ void intTostr(uint32_t num, uint8_t* str) {
 	for (j = 0; j < i; j++) {
 		str[j] = buffer[i - j - 1];
 	}
-	str[i] = '\0'; // Null-terminate the string
+	str[i] = '\0'; // Null-terminateï¿½theï¿½string
 }
 
 void GPS_read(void){
